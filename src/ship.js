@@ -19,10 +19,25 @@ export class Ship {
     return this.sunk;
   }
 
-  place(x, y) {
-    if (x < 0 || y < 0 || x > 10 || y > 10) {
+  //configures the grid location of the ship
+  place(x, y, orientation = "H") {
+    if (
+      x < 0 ||
+      y < 0 ||
+      x > 9 ||
+      y > 9 ||
+      (orientation === "H" && x > 10 - this.length) ||
+      (orientation === "V" && y > 10 - this.length)
+    ) {
       throw new Error("Place ship within the gameboard");
     }
-    this.cords.push(x, y);
+
+    for (let i = 0; i < this.length; i += 1) {
+      if (orientation === "H") {
+        this.cords.push([x + i, y]);
+      } else {
+        this.cords.push([x, y + i]);
+      }
+    }
   }
 }
