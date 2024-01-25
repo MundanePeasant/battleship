@@ -26,4 +26,28 @@ describe("Gameboard", () => {
     expect(gameBoard.board[7][0]).toBe(0);
     expect(gameBoard.board[1][9]).toBe(0);
   });
+
+  test("Gameboard correctly receives series of attacks", () => {
+    const gameBoard = new Gameboard();
+    gameBoard.placeShips();
+    gameBoard.loadShips();
+
+    gameBoard.receiveAttack(0, 0);
+    let ship = gameBoard.ships[0];
+
+    expect(ship.hits).toBe(1);
+    expect(gameBoard.board[0][0]).toBe(2);
+
+    expect(() =>
+      gameBoard.receiveAttack(0, 0).toThrow("Coordinate already attacked")
+    );
+
+    expect(() =>
+      gameBoard.receiveAttack(10, 0).toThrow("Place ship within the gameboard")
+    );
+
+    gameBoard.receiveAttack(7, 0);
+    expect(ship.hits).toBe(1);
+    expect(gameBoard.board[7][0]).toBe(3);
+  });
 });

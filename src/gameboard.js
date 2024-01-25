@@ -46,7 +46,34 @@ export class Gameboard {
   // receiveAttack --> receives an attack as a pair of coordinates, updates the ship if hit, and reports whether
   receiveAttack(x, y) {
     const val = this.board[x][y];
-    return;
+    if (x < 0 || y < 0 || x > 9 || y > 9) {
+      throw new Error("Place ship within the gameboard");
+    }
+
+    switch (val) {
+      case 1: //case when a ship occupies the coordinate but not yet hit
+        //need to get the ship which occupies the coordinate and increment a hit
+        let ship = this.findShip(x, y);
+        ship.hit();
+        this.board[x][y] = 2;
+        break;
+      case 2: //case when a ship occupies the coordinate and has already been hit
+        throw new Error("Coordinate already attacked");
+      case 3: //case when a ship doesn't occupy the coordinate and coordinate already received for attack
+        throw new Error("Coordinate already attacked");
+      default:
+        this.board[x][y] = 3;
+    }
+  }
+
+  findShip(x, y) {
+    let ship = this.ships.find((ship) =>
+      ship.cords.some(
+        (coordinate) => coordinate[0] === x && coordinate[1] === y
+      )
+    );
+
+    return ship || null;
   }
 
   // isBattelship --> reports if all the ships have been sunk
