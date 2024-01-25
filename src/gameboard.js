@@ -14,10 +14,6 @@ export class Gameboard {
     this.placements = {}; // key:value pair of the ships and their locations
   }
 
-  // update board --> takes coordinates and relays what happened while updating the board array
-
-  // shows which ships the opponent has remaining
-
   //input the locations of ships on the board. Pre-determined for now
   placeShips() {
     const placements = [
