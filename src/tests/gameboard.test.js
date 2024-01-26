@@ -10,6 +10,7 @@ describe("Gameboard", () => {
       }
     });
 
+    expect(gameBoard.countSunkShips()).toBe(5);
     expect(gameBoard.isBattleship()).toBe(true);
   });
 

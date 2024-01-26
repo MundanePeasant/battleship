@@ -11,7 +11,6 @@ export class Gameboard {
     ];
     this.board = Array.from({ length: 10 }, () => Array(10).fill(0));
     this.battleship = false; // true if all ships are sunk
-    this.placements = {}; // key:value pair of the ships and their locations
   }
 
   //input the locations of ships on the board. Pre-determined for now
@@ -70,6 +69,11 @@ export class Gameboard {
     );
 
     return ship || null;
+  }
+
+  //returns number of ships sunk
+  countSunkShips() {
+    return this.ships.filter((ship) => ship.sunk).length;
   }
 
   // isBattelship --> reports if all the ships have been sunk
