@@ -13,8 +13,8 @@ export class Player {
     this.turn = !this.turn;
   }
 
+  //take in the enemy board and find locations of all 0s and 1s. randomly selects a location to fire on
   calcNextTurn(board) {
-    //take in the enemy board and find locations of all 0s and 1s. randomly selects a location to fire on
     const options = board.reduce((acc, row, rowIndex) => {
       row.forEach((value, colIndex) => {
         if (value === 0 || value === 1) {
@@ -32,9 +32,8 @@ export class Player {
     return coord;
   }
 
+  //puts gameboard in state where it can be looked at by oppossing player
   scrubBoard() {
-    //puts gameboard in state where it can be looked at by oppossing player
-    let psuedo = this.board;
-    return psuedo.map((row) => row.map((res) => (res === 1 ? 0 : res)));
+    return this.board.map((row) => row.map((res) => (res === 1 ? 0 : res)));
   }
 }
