@@ -12,6 +12,7 @@ export const landingDOM = (function () {
     createChild("player", "board", "p1");
     createGrid("board", "c1");
     createGrid("board", "p1");
+    addAttackListener();
   };
 
   const createChild = (parentClass, ...ident) => {
@@ -28,6 +29,21 @@ export const landingDOM = (function () {
       const cell = document.createElement("div");
       cell.classList.add("tile");
       container.appendChild(cell);
+    }
+  };
+
+  const addAttackListener = () => {
+    const elements = document.querySelector(".c1").children;
+    console.log(elements);
+
+    for (let i = 0; i < elements.length; i += 1) {
+      elements[i].addEventListener("click", () => {
+        let cords = [];
+
+        cords.push(Math.floor(i / 10));
+        cords.push(i % 10);
+        console.log(cords);
+      });
     }
   };
 
@@ -51,6 +67,10 @@ export const shipDOM = (function () {
         }
       }
     }
+  };
+
+  const updateAttacks = (playerType, gameboard) => {
+    //update the board to show results of the attack
   };
 
   return { placeShips };

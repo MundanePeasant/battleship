@@ -19,6 +19,8 @@ while (player.board.battleship || computer.board.battleship) {
   if (player.turn) {
     //prompt the player on where to attack
     //make the attack
+    //implement Promise function that awaits for an event listener (player clicking tile) to take place
+    
     //give player feedback on what happened
     //change turns to the computer
     player.changeTurn();
