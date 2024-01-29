@@ -29,14 +29,16 @@ export class Ship {
       (orientation === "H" && x > 10 - this.length) ||
       (orientation === "V" && y > 10 - this.length)
     ) {
+      console.log(x);
+      console.log(y);
       throw new Error("Place ship within the gameboard");
     }
 
     for (let i = 0; i < this.length; i += 1) {
       if (orientation === "H") {
-        this.cords.push([x + i, y]);
-      } else {
         this.cords.push([x, y + i]);
+      } else {
+        this.cords.push([x + i, y]);
       }
     }
   }

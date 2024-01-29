@@ -33,3 +33,25 @@ export const landingDOM = (function () {
 
   return { createPage };
 })();
+
+export const shipDOM = (function () {
+  const placeShips = (playerType, gameboard) => {
+    //if player, then place the ships at the bottom
+    if (playerType === "H") {
+      const grid = document.querySelector(`.p1`).children;
+
+      //add the ship class to each location where a ship sits
+      console.log(gameboard.board);
+      for (let x = 0; x < 10; x += 1) {
+        for (let y = 0; y < 10; y += 1) {
+          if (gameboard.board[x][y] === 1) {
+            const index = x * 10 + y;
+            grid[index].classList.add("ship");
+          }
+        }
+      }
+    }
+  };
+
+  return { placeShips };
+})();

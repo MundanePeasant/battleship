@@ -1,6 +1,6 @@
 import "./style.css";
 import { Player } from "./player";
-import { landingDOM } from "./dom";
+import { landingDOM, shipDOM } from "./dom";
 
 const player = new Player();
 const computer = new Player(false, "Computer");
@@ -11,8 +11,11 @@ computer.board.placeShips();
 computer.board.loadShips();
 
 landingDOM.createPage();
+shipDOM.placeShips("H", player.board);
 
-while (!player.board.battleship || !computer.board.battleship) {
+//change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly
+while (player.board.battleship || computer.board.battleship) {
+  console.log("runs loops");
   if (player.turn) {
     //prompt the player on where to attack
     //make the attack
@@ -23,7 +26,7 @@ while (!player.board.battleship || !computer.board.battleship) {
   }
   if (computer.turn) {
     //calculate the next turn
-    const attackCords = computer.calcNextTurn(player.board);
+    const attackCords = computer.calcNextTurn(player.board.board);
     //make the attack
     player.board.receiveAttack(...attackCords);
     //change turns to the player

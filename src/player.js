@@ -26,9 +26,10 @@ export class Player {
 
     const index = Math.floor(Math.random() * options.length);
     let coord = [];
-    coord.push(options[index]["row"]);
-    coord.push(options[index]["col"]);
-
+    if (options.length > 0) {
+      coord.push(options[index]["row"]);
+      coord.push(options[index]["col"]);
+    }
     return coord;
   }
 

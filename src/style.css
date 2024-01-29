@@ -1,8 +1,8 @@
 :root {
   --background-color: rgba(196, 209, 217);
-  --cerulean: rgba(0, 157, 219);
+  --cerulean: rgba(0, 157, 219, 0.75);
   --lochmara: rgba(0, 120, 189);
-  --water-leaf: rgba(169, 232, 234);
+  --water-leaf: rgba(169, 232, 234, 0.37);
   --elephant: rgba(16, 43, 60);
   --pickled-bluewood: rgba(45, 68, 83);
   --shuttle-grey: rgba(93, 109, 126);
@@ -30,7 +30,6 @@
 .board-container {
   width: 75%;
   height: 40%;
-  background-color: var(--lochmara);
   padding: 1%;
   display: flex;
   justify-content: center;
@@ -43,11 +42,21 @@
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
-  gap: 0.25%;
 }
 
 .tile {
-  width: 10%;
-  height: 10%;
-  background-color: var(--pickled-bluewood);
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--water-leaf);
+  box-sizing: border-box;
+  transition: transform 0.1s ease-in-out;
+}
+
+.tile:hover {
+  transform: scale(1.15);
+  border: none;
+}
+
+.ship {
+  background-color: var(--shuttle-grey);
 }

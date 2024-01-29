@@ -18,7 +18,7 @@ export class Gameboard {
     const placements = [
       [0, 0, "H"],
       [6, 0, "V"],
-      [8, 5, "V"],
+      [2, 7, "V"],
       [2, 1, "H"],
       [6, 3, "H"],
     ];
