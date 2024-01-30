@@ -33,21 +33,30 @@ export const landingDOM = (function () {
   };
 
   const addAttackListener = () => {
-    const elements = document.querySelector(".c1").children;
-    console.log(elements);
+    return new Promise((resolve) => {
+      const elements = document.querySelector(".c1").children;
+      console.log(elements);
 
-    for (let i = 0; i < elements.length; i += 1) {
-      elements[i].addEventListener("click", () => {
-        let cords = [];
+      for (let i = 0; i < elements.length; i += 1) {
+        elements[i].addEventListener("click", () => {
+          let cords = [];
 
-        cords.push(Math.floor(i / 10));
-        cords.push(i % 10);
-        console.log(cords);
-      });
-    }
+          cords.push(Math.floor(i / 10));
+          cords.push(i % 10);
+
+          resolve(cords);
+        });
+      }
+    });
   };
 
-  return { createPage };
+  const awaitAttack = async () => {
+    let cords = await addAttackListener();
+    console.log(cords);
+    return cords;
+  };
+
+  return { createPage, awaitAttack };
 })();
 
 export const shipDOM = (function () {
@@ -57,7 +66,6 @@ export const shipDOM = (function () {
       const grid = document.querySelector(`.p1`).children;
 
       //add the ship class to each location where a ship sits
-      console.log(gameboard.board);
       for (let x = 0; x < 10; x += 1) {
         for (let y = 0; y < 10; y += 1) {
           if (gameboard.board[x][y] === 1) {
@@ -71,7 +79,23 @@ export const shipDOM = (function () {
 
   const updateAttacks = (playerType, gameboard) => {
     //update the board to show results of the attack
+    const grid =
+      playerType === "H"
+        ? document.querySelector(`.p1`).children
+        : document.querySelector(`.c1`).children;
+    for (let x = 0; x < 10; x += 1) {
+      for (let y = 0; y < 10; y += 1) {
+        if (gameboard.board[x][y] === 3) {
+          const index = x * 10 + y;
+          grid[index].classList.add("miss");
+        }
+        if (gameboard.board[x][y] === 2) {
+          const index = x * 10 + y;
+          grid[index].classList.add("hit");
+        }
+      }
+    }
   };
 
-  return { placeShips };
+  return { placeShips, updateAttacks };
 })();

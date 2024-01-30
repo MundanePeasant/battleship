@@ -60,3 +60,11 @@
 .ship {
   background-color: var(--shuttle-grey);
 }
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: white;
+}

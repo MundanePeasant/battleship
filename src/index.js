@@ -14,23 +14,31 @@ landingDOM.createPage();
 shipDOM.placeShips("H", player.board);
 
 //change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly
-while (player.board.battleship || computer.board.battleship) {
+while (!player.board.battleship && !computer.board.battleship) {
   console.log("runs loops");
   if (player.turn) {
     //prompt the player on where to attack
-    //make the attack
+
     //implement Promise function that awaits for an event listener (player clicking tile) to take place
-    
+    console.log("waiting for player...");
+    const cords = await landingDOM.awaitAttack();
+    //make the attack
+    computer.board.receiveAttack(...cords);
     //give player feedback on what happened
+    //update the board to show what happened with the attack
+    shipDOM.updateAttacks("C", computer.board);
     //change turns to the computer
     player.changeTurn();
     computer.changeTurn();
   }
   if (computer.turn) {
+    console.log("computer turn");
     //calculate the next turn
     const attackCords = computer.calcNextTurn(player.board.board);
     //make the attack
     player.board.receiveAttack(...attackCords);
+    //update the board
+    shipDOM.updateAttacks("H", player.board);
     //change turns to the player
     computer.changeTurn();
     player.changeTurn();

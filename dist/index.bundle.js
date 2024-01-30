@@ -16,7 +16,7 @@
   \********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   landingDOM: () => (/* binding */ landingDOM),\n/* harmony export */   shipDOM: () => (/* binding */ shipDOM)\n/* harmony export */ });\n//initializes the page with all the elements pre-interaction by the player\nconst landingDOM = function () {\n  const createPage = () => {\n    const div = document.createElement(\"div\");\n    div.classList.add(\"gameboard-container\", \"fullscreen\");\n    document.body.appendChild(div);\n    createChild(\"gameboard-container\", \"title\");\n    createChild(\"gameboard-container\", \"computer\", \"board-container\");\n    createChild(\"gameboard-container\", \"player\", \"board-container\");\n    createChild(\"computer\", \"board\", \"c1\");\n    createChild(\"player\", \"board\", \"p1\");\n    createGrid(\"board\", \"c1\");\n    createGrid(\"board\", \"p1\");\n    addAttackListener();\n  };\n  const createChild = (parentClass, ...ident) => {\n    const parent = document.querySelector(`.${parentClass}`);\n    const div = document.createElement(\"div\");\n    div.classList.add(...ident);\n    parent.appendChild(div);\n  };\n  const createGrid = (selector, second) => {\n    const container = document.querySelector(`.${selector}.${second}`);\n    for (let i = 0; i < 100; i += 1) {\n      const cell = document.createElement(\"div\");\n      cell.classList.add(\"tile\");\n      container.appendChild(cell);\n    }\n  };\n  const addAttackListener = () => {\n    const elements = document.querySelector(\".c1\").children;\n    console.log(elements);\n    for (let i = 0; i < elements.length; i += 1) {\n      elements[i].addEventListener(\"click\", () => {\n        let cords = [];\n        cords.push(Math.floor(i / 10));\n        cords.push(i % 10);\n        console.log(cords);\n      });\n    }\n  };\n  return {\n    createPage\n  };\n}();\nconst shipDOM = function () {\n  const placeShips = (playerType, gameboard) => {\n    //if player, then place the ships at the bottom\n    if (playerType === \"H\") {\n      const grid = document.querySelector(`.p1`).children;\n\n      //add the ship class to each location where a ship sits\n      console.log(gameboard.board);\n      for (let x = 0; x < 10; x += 1) {\n        for (let y = 0; y < 10; y += 1) {\n          if (gameboard.board[x][y] === 1) {\n            const index = x * 10 + y;\n            grid[index].classList.add(\"ship\");\n          }\n        }\n      }\n    }\n  };\n  const updateAttacks = (playerType, gameboard) => {\n    //update the board to show results of the attack\n  };\n  return {\n    placeShips\n  };\n}();\n\n//# sourceURL=webpack://battleship/./src/dom.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   landingDOM: () => (/* binding */ landingDOM),\n/* harmony export */   shipDOM: () => (/* binding */ shipDOM)\n/* harmony export */ });\n//initializes the page with all the elements pre-interaction by the player\nconst landingDOM = function () {\n  const createPage = () => {\n    const div = document.createElement(\"div\");\n    div.classList.add(\"gameboard-container\", \"fullscreen\");\n    document.body.appendChild(div);\n    createChild(\"gameboard-container\", \"title\");\n    createChild(\"gameboard-container\", \"computer\", \"board-container\");\n    createChild(\"gameboard-container\", \"player\", \"board-container\");\n    createChild(\"computer\", \"board\", \"c1\");\n    createChild(\"player\", \"board\", \"p1\");\n    createGrid(\"board\", \"c1\");\n    createGrid(\"board\", \"p1\");\n    addAttackListener();\n  };\n  const createChild = (parentClass, ...ident) => {\n    const parent = document.querySelector(`.${parentClass}`);\n    const div = document.createElement(\"div\");\n    div.classList.add(...ident);\n    parent.appendChild(div);\n  };\n  const createGrid = (selector, second) => {\n    const container = document.querySelector(`.${selector}.${second}`);\n    for (let i = 0; i < 100; i += 1) {\n      const cell = document.createElement(\"div\");\n      cell.classList.add(\"tile\");\n      container.appendChild(cell);\n    }\n  };\n  const addAttackListener = () => {\n    return new Promise(resolve => {\n      const elements = document.querySelector(\".c1\").children;\n      console.log(elements);\n      for (let i = 0; i < elements.length; i += 1) {\n        elements[i].addEventListener(\"click\", () => {\n          let cords = [];\n          cords.push(Math.floor(i / 10));\n          cords.push(i % 10);\n          resolve(cords);\n        });\n      }\n    });\n  };\n  const awaitAttack = async () => {\n    let cords = await addAttackListener();\n    console.log(cords);\n    return cords;\n  };\n  return {\n    createPage,\n    awaitAttack\n  };\n}();\nconst shipDOM = function () {\n  const placeShips = (playerType, gameboard) => {\n    //if player, then place the ships at the bottom\n    if (playerType === \"H\") {\n      const grid = document.querySelector(`.p1`).children;\n\n      //add the ship class to each location where a ship sits\n      for (let x = 0; x < 10; x += 1) {\n        for (let y = 0; y < 10; y += 1) {\n          if (gameboard.board[x][y] === 1) {\n            const index = x * 10 + y;\n            grid[index].classList.add(\"ship\");\n          }\n        }\n      }\n    }\n  };\n  const updateAttacks = (playerType, gameboard) => {\n    //update the board to show results of the attack\n    const grid = playerType === \"H\" ? document.querySelector(`.p1`).children : document.querySelector(`.c1`).children;\n    for (let x = 0; x < 10; x += 1) {\n      for (let y = 0; y < 10; y += 1) {\n        if (gameboard.board[x][y] === 3) {\n          const index = x * 10 + y;\n          grid[index].classList.add(\"miss\");\n        }\n        if (gameboard.board[x][y] === 2) {\n          const index = x * 10 + y;\n          grid[index].classList.add(\"hit\");\n        }\n      }\n    }\n  };\n  return {\n    placeShips,\n    updateAttacks\n  };\n}();\n\n//# sourceURL=webpack://battleship/./src/dom.js?");
 
 /***/ }),
 
@@ -34,9 +34,9 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dom */ \"./src/dom.js\");\n\n\n\nconst player = new _player__WEBPACK_IMPORTED_MODULE_1__.Player();\nconst computer = new _player__WEBPACK_IMPORTED_MODULE_1__.Player(false, \"Computer\");\nplayer.board.placeShips();\nplayer.board.loadShips();\ncomputer.board.placeShips();\ncomputer.board.loadShips();\n_dom__WEBPACK_IMPORTED_MODULE_2__.landingDOM.createPage();\n_dom__WEBPACK_IMPORTED_MODULE_2__.shipDOM.placeShips(\"H\", player.board);\n\n//change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly\nwhile (player.board.battleship || computer.board.battleship) {\n  console.log(\"runs loops\");\n  if (player.turn) {\n    //prompt the player on where to attack\n    //make the attack\n    //implement Promise function that awaits for an event listener (player clicking tile) to take place\n\n    //give player feedback on what happened\n    //change turns to the computer\n    player.changeTurn();\n    computer.changeTurn();\n  }\n  if (computer.turn) {\n    //calculate the next turn\n    const attackCords = computer.calcNextTurn(player.board.board);\n    //make the attack\n    player.board.receiveAttack(...attackCords);\n    //change turns to the player\n    computer.changeTurn();\n    player.changeTurn();\n  }\n}\n\n//# sourceURL=webpack://battleship/./src/index.js?");
+eval("__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {\n__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ \"./src/style.css\");\n/* harmony import */ var _player__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./player */ \"./src/player.js\");\n/* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dom */ \"./src/dom.js\");\n\n\n\nconst player = new _player__WEBPACK_IMPORTED_MODULE_1__.Player();\nconst computer = new _player__WEBPACK_IMPORTED_MODULE_1__.Player(false, \"Computer\");\nplayer.board.placeShips();\nplayer.board.loadShips();\ncomputer.board.placeShips();\ncomputer.board.loadShips();\n_dom__WEBPACK_IMPORTED_MODULE_2__.landingDOM.createPage();\n_dom__WEBPACK_IMPORTED_MODULE_2__.shipDOM.placeShips(\"H\", player.board);\n\n//change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly\nwhile (!player.board.battleship && !computer.board.battleship) {\n  console.log(\"runs loops\");\n  if (player.turn) {\n    //prompt the player on where to attack\n\n    //implement Promise function that awaits for an event listener (player clicking tile) to take place\n    console.log(\"waiting for player...\");\n    const cords = await _dom__WEBPACK_IMPORTED_MODULE_2__.landingDOM.awaitAttack();\n    //make the attack\n    computer.board.receiveAttack(...cords);\n    //give player feedback on what happened\n    //update the board to show what happened with the attack\n    _dom__WEBPACK_IMPORTED_MODULE_2__.shipDOM.updateAttacks(\"C\", computer.board);\n    //change turns to the computer\n    player.changeTurn();\n    computer.changeTurn();\n  }\n  if (computer.turn) {\n    console.log(\"computer turn\");\n    //calculate the next turn\n    const attackCords = computer.calcNextTurn(player.board.board);\n    //make the attack\n    player.board.receiveAttack(...attackCords);\n    //update the board\n    _dom__WEBPACK_IMPORTED_MODULE_2__.shipDOM.updateAttacks(\"H\", player.board);\n    //change turns to the player\n    computer.changeTurn();\n    player.changeTurn();\n  }\n}\n__webpack_async_result__();\n} catch(e) { __webpack_async_result__(e); } }, 1);\n\n//# sourceURL=webpack://battleship/./src/index.js?");
 
 /***/ }),
 
@@ -66,7 +66,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/noSourceMaps.js */ \"./node_modules/css-loader/dist/runtime/noSourceMaps.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);\n// Imports\n\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, `:root {\n  --background-color: rgba(196, 209, 217);\n  --cerulean: rgba(0, 157, 219, 0.75);\n  --lochmara: rgba(0, 120, 189);\n  --water-leaf: rgba(169, 232, 234, 0.37);\n  --elephant: rgba(16, 43, 60);\n  --pickled-bluewood: rgba(45, 68, 83);\n  --shuttle-grey: rgba(93, 109, 126);\n}\n\n.fullscreen {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: var(--background-color);\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\n.title {\n  width: 50%;\n  height: 10%;\n  background-color: var(--water-leaf);\n  padding: 1%;\n}\n\n.board-container {\n  width: 75%;\n  height: 40%;\n  padding: 1%;\n  display: flex;\n  justify-content: center;\n}\n\n.board {\n  height: 99%;\n  aspect-ratio: 1 / 1;\n  background-color: var(--cerulean);\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n}\n\n.tile {\n  width: 100%;\n  height: 100%;\n  border: 1px solid var(--water-leaf);\n  box-sizing: border-box;\n  transition: transform 0.1s ease-in-out;\n}\n\n.tile:hover {\n  transform: scale(1.15);\n  border: none;\n}\n\n.ship {\n  background-color: var(--shuttle-grey);\n}\n`, \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack://battleship/./src/style.css?./node_modules/css-loader/dist/cjs.js");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/noSourceMaps.js */ \"./node_modules/css-loader/dist/runtime/noSourceMaps.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ \"./node_modules/css-loader/dist/runtime/api.js\");\n/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);\n// Imports\n\n\nvar ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));\n// Module\n___CSS_LOADER_EXPORT___.push([module.id, `:root {\n  --background-color: rgba(196, 209, 217);\n  --cerulean: rgba(0, 157, 219, 0.75);\n  --lochmara: rgba(0, 120, 189);\n  --water-leaf: rgba(169, 232, 234, 0.37);\n  --elephant: rgba(16, 43, 60);\n  --pickled-bluewood: rgba(45, 68, 83);\n  --shuttle-grey: rgba(93, 109, 126);\n}\n\n.fullscreen {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: var(--background-color);\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n\n.title {\n  width: 50%;\n  height: 10%;\n  background-color: var(--water-leaf);\n  padding: 1%;\n}\n\n.board-container {\n  width: 75%;\n  height: 40%;\n  padding: 1%;\n  display: flex;\n  justify-content: center;\n}\n\n.board {\n  height: 99%;\n  aspect-ratio: 1 / 1;\n  background-color: var(--cerulean);\n  display: grid;\n  grid-template-columns: repeat(10, 1fr);\n  grid-template-rows: repeat(10, 1fr);\n}\n\n.tile {\n  width: 100%;\n  height: 100%;\n  border: 1px solid var(--water-leaf);\n  box-sizing: border-box;\n  transition: transform 0.1s ease-in-out;\n}\n\n.tile:hover {\n  transform: scale(1.15);\n  border: none;\n}\n\n.ship {\n  background-color: var(--shuttle-grey);\n}\n\n.hit {\n  background-color: red;\n}\n\n.miss {\n  background-color: white;\n}\n`, \"\"]);\n// Exports\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);\n\n\n//# sourceURL=webpack://battleship/./src/style.css?./node_modules/css-loader/dist/cjs.js");
 
 /***/ }),
 
@@ -187,6 +187,75 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
