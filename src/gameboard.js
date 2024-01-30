@@ -59,6 +59,8 @@ export class Gameboard {
       default:
         this.board[x][y] = 3;
     }
+
+    this.isBattleship();
   }
 
   findShip(x, y) {
@@ -81,6 +83,5 @@ export class Gameboard {
     if (!this.battleship) {
       this.battleship = this.ships.every((value) => value.isSunk() === true);
     }
-    return this.battleship;
   }
 }
