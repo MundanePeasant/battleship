@@ -16,6 +16,7 @@ export const landingDOM = (function () {
     createChild("player", "filler", "l");
     createChild("player", "board", "p1");
     createChild("player", "filler", "ship-selector");
+    draggableShips("ship-selector");
 
     createGrid("board", "c1");
     createGrid("board", "p1");
@@ -37,6 +38,31 @@ export const landingDOM = (function () {
       const cell = document.createElement("div");
       cell.classList.add("tile");
       container.appendChild(cell);
+    }
+  };
+
+  const draggableShips = (selector) => {
+    const container = document.querySelector(`.${selector}`);
+    for (let i = 0; i < 5; i += 1) {
+      const ship = document.createElement("div");
+      ship.id = i;
+      ship.classList.add("ship-drag");
+      container.appendChild(ship);
+    }
+    const shipLength = [5, 4, 3, 3, 2];
+
+    for (let i = 0; i < shipLength.length; i += 1) {
+      const container = document.getElementById(`${i}`);
+      const shipHolder = document.createElement("div");
+      shipHolder.classList.add("ship-holder");
+
+      for (let x = 0; x < shipLength[i]; x += 1) {
+        console.log(shipLength[i]);
+        const tile = document.createElement("div");
+        tile.classList.add("ship-tile");
+        shipHolder.appendChild(tile);
+      }
+      container.appendChild(shipHolder);
     }
   };
 
