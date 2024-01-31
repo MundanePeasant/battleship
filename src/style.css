@@ -32,7 +32,7 @@
   height: 40%;
   padding: 1%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .board {
@@ -67,4 +67,8 @@
 
 .miss {
   background-color: white;
+}
+
+.filler {
+  width: 30%;
 }

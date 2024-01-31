@@ -8,10 +8,18 @@ export const landingDOM = (function () {
     createChild("gameboard-container", "title");
     createChild("gameboard-container", "computer", "board-container");
     createChild("gameboard-container", "player", "board-container");
+
+    createChild("computer", "filler", "l");
     createChild("computer", "board", "c1");
+    createChild("computer", "filler", "r");
+
+    createChild("player", "filler", "l");
     createChild("player", "board", "p1");
+    createChild("player", "filler", "ship-selector");
+
     createGrid("board", "c1");
     createGrid("board", "p1");
+
     addAttackListener();
   };
 
