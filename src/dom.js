@@ -22,6 +22,7 @@ export const landingDOM = (function () {
     createGrid("board", "p1");
 
     shipTileSizer();
+    dragShips();
     addAttackListener();
   };
 
@@ -65,6 +66,33 @@ export const landingDOM = (function () {
       }
       container.appendChild(shipHolder);
     }
+  };
+
+  const dragShips = () => {
+    //get all the ships
+    const ships = document.querySelectorAll(".ship-holder");
+
+    //set draggable to be true for all
+    ships.forEach((ship) => {
+      ship.setAttribute("draggable", true);
+      ship.ondragstart = (event) => {
+        const parent = ship.parentNode;
+        event.dataTransfer.setData("shipIndex", parent.id);
+      };
+    });
+
+    const tiles = document.querySelectorAll(".tile");
+
+    tiles.forEach((tile) => {
+      tile.ondrop = (event) => {
+        event.preventDefault();
+        let info = event.dataTransfer.getData("shipIndex");
+        console.log(info);
+      };
+      tile.ondragover = (event) => {
+        event.preventDefault();
+      };
+    });
   };
 
   const shipTileSizer = () => {
