@@ -21,6 +21,7 @@ export const landingDOM = (function () {
     createGrid("board", "c1");
     createGrid("board", "p1");
 
+    shipTileSizer();
     addAttackListener();
   };
 
@@ -64,6 +65,19 @@ export const landingDOM = (function () {
       }
       container.appendChild(shipHolder);
     }
+  };
+
+  const shipTileSizer = () => {
+    let tile = document.querySelectorAll(".tile")[0];
+    let shipTile = document.querySelectorAll(".ship-tile");
+
+    let tileStyles = window.getComputedStyle(tile);
+    let tileSize = parseFloat(tileStyles.width);
+
+    shipTile.forEach((tile) => {
+      tile.style.width = `${tileSize}px`;
+      tile.style.height = `${tileSize}px`;
+    });
   };
 
   const addAttackListener = () => {
