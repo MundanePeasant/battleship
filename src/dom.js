@@ -73,13 +73,10 @@ export const landingDOM = (function () {
         throw new Error(`No ship found at index ${shipIndex}`);
       }
 
-      console.log(ship);
-
       ship.forEach((ship) => {
         const id = ship.parentNode.id;
         ship.setAttribute("draggable", true);
         ship.ondragstart = () => {
-          console.log(id);
           resolve(id);
         };
       });
@@ -114,11 +111,14 @@ export const landingDOM = (function () {
   };
 
   const placeShips = (promiseShip, shipObj) => {
-    const index = shipObj[0];
+    const index = parseInt(shipObj[0]);
     const x = shipObj[1][0];
     const y = shipObj[1][1];
 
-    promiseShip[index] = [x, y];
+    const updatedPromises = [...promiseShip];
+
+    updatedPromises[index] = [x, y];
+    return updatedPromises;
   };
 
   const shipTileSizer = () => {

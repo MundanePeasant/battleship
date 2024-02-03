@@ -17,14 +17,15 @@ landingDOM.createPage();
 console.log("ships placed");
 */
 
-const shipPlacement = Array.apply(null, Array(5)).map(function () {});
+let shipPlacement = new Array(5).fill(null);
 
-while (!shipPlacement.includes(null)) {
+while (shipPlacement.includes(null)) {
+  console.log("inside the loop");
   const selectShips = await landingDOM.awaitPlacement();
-  landingDOM.placeShips(selectShips[0], selectShips[1]);
+  console.log(selectShips);
+  shipPlacement = landingDOM.placeShips(shipPlacement, selectShips);
+  console.log(shipPlacement);
 }
-
-console.log(selectShips);
 
 shipDOM.placeShips("H", player.board);
 
