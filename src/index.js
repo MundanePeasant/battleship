@@ -11,6 +11,21 @@ computer.board.placeShips();
 computer.board.loadShips();
 
 landingDOM.createPage();
+
+//need to add code which awaits the players dropping all ships
+/*const placements = await landingDOM.placeAllShips();
+console.log("ships placed");
+*/
+
+const shipPlacement = Array.apply(null, Array(5)).map(function () {});
+
+while (!shipPlacement.includes(null)) {
+  const selectShips = await landingDOM.awaitPlacement();
+  landingDOM.placeShips(selectShips[0], selectShips[1]);
+}
+
+console.log(selectShips);
+
 shipDOM.placeShips("H", player.board);
 
 //change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly

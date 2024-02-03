@@ -11,6 +11,11 @@ export class Gameboard {
     ];
     this.board = Array.from({ length: 10 }, () => Array(10).fill(0));
     this.battleship = false; // true if all ships are sunk
+    this.placements = new Array(5); //where ships are placed on the board
+  }
+
+  receivePlacement(shipVal, x, y) {
+    this.placements[parseInt(shipVal)] = [x, y, "H"];
   }
 
   //input the locations of ships on the board. Pre-determined for now
@@ -25,7 +30,11 @@ export class Gameboard {
 
     this.ships.forEach((ship) => {
       const loc = this.ships.indexOf(ship);
-      ship.place(placements[loc][0], placements[loc][1], placements[loc][2]);
+      ship.place(
+        placements[loc][0],
+        placements[loc][1],
+        placements[loc][2]
+      );
     });
   }
 

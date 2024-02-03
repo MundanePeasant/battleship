@@ -22,7 +22,6 @@ export const landingDOM = (function () {
     createGrid("board", "p1");
 
     shipTileSizer();
-    dragShips();
     addAttackListener();
   };
 
@@ -59,7 +58,6 @@ export const landingDOM = (function () {
       shipHolder.classList.add("ship-holder");
 
       for (let x = 0; x < shipLength[i]; x += 1) {
-        console.log(shipLength[i]);
         const tile = document.createElement("div");
         tile.classList.add("ship-tile");
         shipHolder.appendChild(tile);
@@ -68,31 +66,59 @@ export const landingDOM = (function () {
     }
   };
 
-  const dragShips = () => {
-    //get all the ships
-    const ships = document.querySelectorAll(".ship-holder");
+  const initDragAndDropForShip = () => {
+    return new Promise((resolve, reject) => {
+      const ship = document.querySelectorAll(".ship-holder");
+      if (!ship) {
+        throw new Error(`No ship found at index ${shipIndex}`);
+      }
 
-    //set draggable to be true for all
-    ships.forEach((ship) => {
-      ship.setAttribute("draggable", true);
-      ship.ondragstart = (event) => {
-        const parent = ship.parentNode;
-        event.dataTransfer.setData("shipIndex", parent.id);
-      };
+      console.log(ship);
+
+      ship.forEach((ship) => {
+        const id = ship.parentNode.id;
+        ship.setAttribute("draggable", true);
+        ship.ondragstart = () => {
+          console.log(id);
+          resolve(id);
+        };
+      });
     });
+  };
 
-    const tiles = document.querySelectorAll(".tile");
+  const handleDropForShip = () => {
+    return new Promise((resolve, reject) => {
+      const tiles = document.querySelector(".p1").children;
 
-    tiles.forEach((tile) => {
-      tile.ondrop = (event) => {
-        event.preventDefault();
-        let info = event.dataTransfer.getData("shipIndex");
-        console.log(info);
-      };
-      tile.ondragover = (event) => {
-        event.preventDefault();
-      };
+      for (let i = 0; i < tiles.length; i += 1) {
+        tiles[i].ondrop = (event) => {
+          event.preventDefault();
+          const row = Math.floor(i / 10);
+          const col = i % 10;
+          const output = [row, col];
+          console.log(output);
+          resolve(output);
+        };
+        tiles[i].ondragover = (event) => {
+          event.preventDefault();
+        };
+      }
     });
+  };
+
+  const awaitPlacement = async () => {
+    let index = await initDragAndDropForShip();
+    let cords = await handleDropForShip();
+    const place = [index, cords];
+    return place;
+  };
+
+  const placeShips = (promiseShip, shipObj) => {
+    const index = shipObj[0];
+    const x = shipObj[1][0];
+    const y = shipObj[1][1];
+
+    promiseShip[index] = [x, y];
   };
 
   const shipTileSizer = () => {
@@ -111,7 +137,6 @@ export const landingDOM = (function () {
   const addAttackListener = () => {
     return new Promise((resolve) => {
       const elements = document.querySelector(".c1").children;
-      console.log(elements);
 
       for (let i = 0; i < elements.length; i += 1) {
         elements[i].addEventListener("click", () => {
@@ -128,11 +153,10 @@ export const landingDOM = (function () {
 
   const awaitAttack = async () => {
     let cords = await addAttackListener();
-    console.log(cords);
     return cords;
   };
 
-  return { createPage, awaitAttack };
+  return { createPage, awaitAttack, awaitPlacement, placeShips };
 })();
 
 export const shipDOM = (function () {
