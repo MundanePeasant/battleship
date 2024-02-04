@@ -5,17 +5,11 @@ import { landingDOM, shipDOM } from "./dom";
 const player = new Player();
 const computer = new Player(false, "Computer");
 
-player.board.placeShips();
-player.board.loadShips();
-computer.board.placeShips();
+
+computer.board.placeShips("C");
 computer.board.loadShips();
 
 landingDOM.createPage();
-
-//need to add code which awaits the players dropping all ships
-/*const placements = await landingDOM.placeAllShips();
-console.log("ships placed");
-*/
 
 let shipPlacement = new Array(5).fill(null);
 
@@ -27,6 +21,9 @@ while (shipPlacement.includes(null)) {
   console.log(shipPlacement);
 }
 
+player.board.receivePlacements(shipPlacement);
+player.board.placeShips();
+player.board.loadShips();
 shipDOM.placeShips("H", player.board);
 
 //change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly

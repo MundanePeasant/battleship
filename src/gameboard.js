@@ -14,12 +14,19 @@ export class Gameboard {
     this.placements = new Array(5); //where ships are placed on the board
   }
 
-  receivePlacement(shipVal, x, y) {
-    this.placements[parseInt(shipVal)] = [x, y, "H"];
+  receivePlacements(shipPlaces) {
+    //this.placements[parseInt(shipVal)] = [x, y, "H"];
+
+    for (let i = 0; i < shipPlaces.length; i += 1) {
+      //need to add ship orientation here!!!!
+      const place = shipPlaces[i];
+      place.push("H");
+      this.placements[i] = place;
+    }
   }
 
   //input the locations of ships on the board. Pre-determined for now
-  placeShips() {
+  placeShips(playerType = "H") {
     const placements = [
       [0, 0, "H"],
       [6, 0, "V"],
@@ -28,12 +35,16 @@ export class Gameboard {
       [6, 3, "H"],
     ];
 
+    if (playerType === "C") {
+      this.placements = placements;
+    }
+
     this.ships.forEach((ship) => {
       const loc = this.ships.indexOf(ship);
       ship.place(
-        placements[loc][0],
-        placements[loc][1],
-        placements[loc][2]
+        this.placements[loc][0],
+        this.placements[loc][1],
+        this.placements[loc][2]
       );
     });
   }
