@@ -15,13 +15,13 @@ export class Gameboard {
   }
 
   receivePlacements(shipPlaces) {
-    //this.placements[parseInt(shipVal)] = [x, y, "H"];
-
     for (let i = 0; i < shipPlaces.length; i += 1) {
       //need to add ship orientation here!!!!
-      const place = shipPlaces[i];
-      place.push("H");
-      this.placements[i] = place;
+      if (shipPlaces[i]) {
+        const place = shipPlaces[i];
+        place.push("H");
+        this.placements[i] = place;
+      }
     }
   }
 
@@ -41,11 +41,16 @@ export class Gameboard {
 
     this.ships.forEach((ship) => {
       const loc = this.ships.indexOf(ship);
-      ship.place(
-        this.placements[loc][0],
-        this.placements[loc][1],
-        this.placements[loc][2]
-      );
+
+      try {
+        ship.place(
+          this.placements[loc][0],
+          this.placements[loc][1],
+          this.placements[loc][2]
+        );
+      } catch (error) {
+        console.log(error);
+      }
     });
   }
 

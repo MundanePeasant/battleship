@@ -5,7 +5,6 @@ import { landingDOM, shipDOM } from "./dom";
 const player = new Player();
 const computer = new Player(false, "Computer");
 
-
 computer.board.placeShips("C");
 computer.board.loadShips();
 
@@ -16,15 +15,13 @@ let shipPlacement = new Array(5).fill(null);
 while (shipPlacement.includes(null)) {
   console.log("inside the loop");
   const selectShips = await landingDOM.awaitPlacement();
-  console.log(selectShips);
   shipPlacement = landingDOM.placeShips(shipPlacement, selectShips);
-  console.log(shipPlacement);
-}
 
-player.board.receivePlacements(shipPlacement);
-player.board.placeShips();
-player.board.loadShips();
-shipDOM.placeShips("H", player.board);
+  player.board.receivePlacements(shipPlacement);
+  player.board.placeShips();
+  player.board.loadShips();
+  shipDOM.placeShips("H", player.board);
+}
 
 //change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly
 while (!player.board.battleship && !computer.board.battleship) {
