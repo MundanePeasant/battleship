@@ -6,6 +6,7 @@ const player = new Player();
 const computer = new Player(false, "Computer");
 
 computer.board.placeShips("C");
+computer.board.generateComputerShips();
 computer.board.loadShips();
 
 landingDOM.createPage();

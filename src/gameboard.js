@@ -25,17 +25,71 @@ export class Gameboard {
     }
   }
 
+  generateComputerShips() {
+    //loop through the ships
+    let placements = [];
+
+    for (let i = 0; i < this.ships.length; i += 1) {
+      let empty = true;
+      while (empty) {
+        //1 means horizontal, 2 is vertical
+        const orient = Math.floor(Math.random() * 2) + 1;
+        let x = 0;
+        let y = 0;
+        let shipPlace = [];
+        if (orient == 1) {
+          x = Math.floor(Math.random() * 10);
+          y = Math.floor(Math.random() * (9 - this.ships[i].length));
+          const cords = [];
+          for (let z = 0; z < this.ships[i].length; z += 1) {
+            cords.push([x, y + z]);
+          }
+          let exists = cords.some((cord) =>
+            placements.some(
+              (placement) =>
+                placement[0] === cord[0] && placement[1] === cord[1]
+            )
+          );
+          if (!exists) {
+            placements = [...placements, ...cords];
+            console.log(placements);
+            empty = false;
+          }
+        } else if (orient == 2) {
+          x = Math.floor(Math.random() * (9 - this.ships[i].length));
+          y = Math.floor(Math.random() * 10);
+          const cords = [];
+          for (let z = 0; z < this.ships[i].length; z += 1) {
+            cords.push([x + z, y]);
+          }
+          let exists = cords.some((cord) =>
+            placements.some(
+              (placement) =>
+                placement[0] === cord[0] && placement[1] === cord[1]
+            )
+          );
+          if (!exists) {
+            placements = [...placements, ...cords];
+            console.log(placements);
+            empty = false;
+          }
+        }
+      }
+    }
+  }
+
   //input the locations of ships on the board. Pre-determined for now
   placeShips(playerType = "H") {
-    const placements = [
-      [0, 0, "H"],
-      [6, 0, "V"],
-      [2, 7, "V"],
-      [2, 1, "H"],
-      [6, 3, "H"],
-    ];
-
     if (playerType === "C") {
+      const placements = [
+        [0, 0, "H"],
+        [6, 0, "V"],
+        [2, 7, "V"],
+        [2, 1, "H"],
+        [6, 3, "H"],
+      ];
+      //randomly select a location
+      //make sure it doesn't mess with any of the other placements or go off the board
       this.placements = placements;
     }
 
