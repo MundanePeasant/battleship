@@ -93,7 +93,6 @@ export const landingDOM = (function () {
           const row = Math.floor(i / 10);
           const col = i % 10;
           const output = [row, col];
-          console.log(output);
           resolve(output);
         };
         tiles[i].ondragover = (event) => {

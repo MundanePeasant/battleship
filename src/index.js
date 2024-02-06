@@ -5,7 +5,6 @@ import { landingDOM, shipDOM } from "./dom";
 const player = new Player();
 const computer = new Player(false, "Computer");
 
-computer.board.placeShips("C");
 computer.board.generateComputerShips();
 computer.board.loadShips();
 
@@ -18,6 +17,7 @@ while (shipPlacement.includes(null)) {
   const selectShips = await landingDOM.awaitPlacement();
   shipPlacement = landingDOM.placeShips(shipPlacement, selectShips);
 
+  console.log(shipPlacement);
   player.board.receivePlacements(shipPlacement);
   player.board.placeShips();
   player.board.loadShips();

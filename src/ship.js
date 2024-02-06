@@ -26,11 +26,9 @@ export class Ship {
       y < 0 ||
       x > 9 ||
       y > 9 ||
-      (orientation === "H" && x > 10 - this.length) ||
-      (orientation === "V" && y > 10 - this.length)
+      (orientation === "V" && x > 10 - this.length) ||
+      (orientation === "H" && y > 10 - this.length)
     ) {
-      console.log(x);
-      console.log(y);
       throw new Error("Place ship within the gameboard");
     }
 

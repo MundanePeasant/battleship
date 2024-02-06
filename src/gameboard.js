@@ -16,17 +16,14 @@ export class Gameboard {
 
   receivePlacements(shipPlaces) {
     for (let i = 0; i < shipPlaces.length; i += 1) {
-      //need to add ship orientation here!!!!
       if (shipPlaces[i]) {
         const place = shipPlaces[i];
-        place.push("H");
         this.placements[i] = place;
       }
     }
   }
 
   generateComputerShips() {
-    //loop through the ships
     let placements = [];
 
     for (let i = 0; i < this.ships.length; i += 1) {
@@ -39,7 +36,7 @@ export class Gameboard {
         let shipPlace = [];
         if (orient == 1) {
           x = Math.floor(Math.random() * 10);
-          y = Math.floor(Math.random() * (9 - this.ships[i].length));
+          y = Math.floor(Math.random() * (9 - this.ships[i].length + 1));
           const cords = [];
           for (let z = 0; z < this.ships[i].length; z += 1) {
             cords.push([x, y + z]);
@@ -52,11 +49,13 @@ export class Gameboard {
           );
           if (!exists) {
             placements = [...placements, ...cords];
-            console.log(placements);
+            console.log("HORIZONTAL");
+            console.log(x, y);
+            this.ships[i].place(x, y, "H");
             empty = false;
           }
         } else if (orient == 2) {
-          x = Math.floor(Math.random() * (9 - this.ships[i].length));
+          x = Math.floor(Math.random() * (9 - this.ships[i].length + 1));
           y = Math.floor(Math.random() * 10);
           const cords = [];
           for (let z = 0; z < this.ships[i].length; z += 1) {
@@ -70,7 +69,7 @@ export class Gameboard {
           );
           if (!exists) {
             placements = [...placements, ...cords];
-            console.log(placements);
+            this.ships[i].place(x, y, "V");
             empty = false;
           }
         }
@@ -80,28 +79,11 @@ export class Gameboard {
 
   //input the locations of ships on the board. Pre-determined for now
   placeShips(playerType = "H") {
-    if (playerType === "C") {
-      const placements = [
-        [0, 0, "H"],
-        [6, 0, "V"],
-        [2, 7, "V"],
-        [2, 1, "H"],
-        [6, 3, "H"],
-      ];
-      //randomly select a location
-      //make sure it doesn't mess with any of the other placements or go off the board
-      this.placements = placements;
-    }
-
     this.ships.forEach((ship) => {
       const loc = this.ships.indexOf(ship);
 
       try {
-        ship.place(
-          this.placements[loc][0],
-          this.placements[loc][1],
-          this.placements[loc][2]
-        );
+        ship.place(this.placements[loc][0], this.placements[loc][1]);
       } catch (error) {
         console.log(error);
       }
@@ -109,12 +91,16 @@ export class Gameboard {
   }
 
   //puts the Ship locations into the gameboard
+  //function is not correct, not putting the coordinates onto the board correctly
   loadShips() {
     this.ships.forEach((ship) => {
       ship.cords.forEach((cordinate) => {
+        console.log(cordinate);
         this.board[cordinate[0]][cordinate[1]] = 1;
       });
     });
+
+    console.log(this.board);
   }
 
   // receiveAttack --> receives an attack as a pair of coordinates, updates the ship if hit, and reports whether
