@@ -6,6 +6,7 @@ export class Player {
     this.board = new Gameboard();
     this.turn = turn;
     this.lastTurn = null;
+    this.lastHit = null;
     this.shipsSunk = 0;
   }
 
@@ -24,12 +25,23 @@ export class Player {
       return acc;
     }, []);
 
+    if (this.lastHit == this.lastTurn && this.lastHit != null) {
+      console.log("ONTO SOMETHING");
+      //calculate what the 4 tiles closest are
+      console.log(this.lastHit);
+      //randomly select one of the four
+      //check to make sure the tile is available in options, if not, pick random
+    }
+
+    console.log(options);
+
     const index = Math.floor(Math.random() * options.length);
     let coord = [];
     if (options.length > 0) {
       coord.push(options[index]["row"]);
       coord.push(options[index]["col"]);
     }
+    this.lastTurn = coord;
     return coord;
   }
 

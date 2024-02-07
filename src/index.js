@@ -27,6 +27,8 @@ while (shipPlacement.includes(null)) {
 //change to !player.board.battlehsip and !computer.board.battleship when ready to implement correctly
 while (!player.board.battleship && !computer.board.battleship) {
   console.log("runs loops");
+  let skipIteration = false;
+
   if (player.turn) {
     //prompt the player on where to attack
 
@@ -34,20 +36,31 @@ while (!player.board.battleship && !computer.board.battleship) {
     console.log("waiting for player...");
     const cords = await landingDOM.awaitAttack();
     //make the attack
-    computer.board.receiveAttack(...cords);
-    //give player feedback on what happened
-    //update the board to show what happened with the attack
-    shipDOM.updateAttacks("C", computer.board);
-    //change turns to the computer
-    player.changeTurn();
-    computer.changeTurn();
+
+    try {
+      computer.board.receiveAttack(...cords);
+    } catch (error) {
+      console.error("Error", error);
+      skipIteration = true;
+    }
+
+    if (!skipIteration) {
+      shipDOM.updateAttacks("C", computer.board);
+      player.changeTurn();
+      computer.changeTurn();
+    }
   }
   if (computer.turn) {
     console.log("computer turn");
     //calculate the next turn
     const attackCords = computer.calcNextTurn(player.board.board);
     //make the attack
-    player.board.receiveAttack(...attackCords);
+    const outcome = player.board.receiveAttack(...attackCords);
+
+    if (outcome === 2) {
+      computer.lastHit = computer.lastTurn;
+    }
+
     //update the board
     shipDOM.updateAttacks("H", player.board);
     //change turns to the player

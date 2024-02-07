@@ -49,8 +49,6 @@ export class Gameboard {
           );
           if (!exists) {
             placements = [...placements, ...cords];
-            console.log("HORIZONTAL");
-            console.log(x, y);
             this.ships[i].place(x, y, "H");
             empty = false;
           }
@@ -95,12 +93,9 @@ export class Gameboard {
   loadShips() {
     this.ships.forEach((ship) => {
       ship.cords.forEach((cordinate) => {
-        console.log(cordinate);
         this.board[cordinate[0]][cordinate[1]] = 1;
       });
     });
-
-    console.log(this.board);
   }
 
   // receiveAttack --> receives an attack as a pair of coordinates, updates the ship if hit, and reports whether
@@ -109,6 +104,9 @@ export class Gameboard {
     if (x < 0 || y < 0 || x > 9 || y > 9) {
       throw new Error("Place ship within the gameboard");
     }
+    let outcome = 0;
+
+    console.log(this.board);
 
     switch (val) {
       case 1: //case when a ship occupies the coordinate but not yet hit
@@ -116,6 +114,7 @@ export class Gameboard {
         let ship = this.findShip(x, y);
         ship.hit();
         this.board[x][y] = 2;
+        outcome = 2;
         break;
       case 2: //case when a ship occupies the coordinate and has already been hit
         throw new Error("Coordinate already attacked");
@@ -123,9 +122,10 @@ export class Gameboard {
         throw new Error("Coordinate already attacked");
       default:
         this.board[x][y] = 3;
+        outcome = 3;
     }
-
     this.isBattleship();
+    return outcome;
   }
 
   findShip(x, y) {
