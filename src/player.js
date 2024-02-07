@@ -61,6 +61,7 @@ export class Player {
       }
 
       if (match) {
+        this.lastTurn = coords;
         return coords;
       }
     }
