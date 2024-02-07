@@ -56,7 +56,6 @@ while (!player.board.battleship && !computer.board.battleship) {
     const attackCords = computer.calcNextTurn(player.board.board);
     //make the attack
     const outcome = player.board.receiveAttack(...attackCords);
-
     if (outcome === 2) {
       computer.lastHit = computer.lastTurn;
     }

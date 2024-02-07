@@ -106,8 +106,6 @@ export class Gameboard {
     }
     let outcome = 0;
 
-    console.log(this.board);
-
     switch (val) {
       case 1: //case when a ship occupies the coordinate but not yet hit
         //need to get the ship which occupies the coordinate and increment a hit
