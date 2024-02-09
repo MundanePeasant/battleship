@@ -1,3 +1,5 @@
+import navyShip from "./assets/navy-ship.png";
+
 //initializes the page with all the elements pre-interaction by the player
 export const landingDOM = (function () {
   const createPage = () => {
@@ -6,6 +8,9 @@ export const landingDOM = (function () {
     document.body.appendChild(div);
 
     createChild("gameboard-container", "title");
+    addLogo("title");
+    addTitle("title");
+    addLogo("title", "flip");
     createChild("gameboard-container", "computer", "board-container");
     createChild("gameboard-container", "player", "board-container");
 
@@ -153,6 +158,31 @@ export const landingDOM = (function () {
   const awaitAttack = async () => {
     let cords = await addAttackListener();
     return cords;
+  };
+
+  const addLogo = (parentClass, orientation) => {
+    const parent = document.querySelector(`.${parentClass}`);
+    let img = document.createElement("img");
+
+    img.src = navyShip;
+    img.style.height = "100%";
+    img.alt = "image of a navy battleship";
+
+    if (orientation) {
+      img.style.transform = "scaleX(-1)";
+    }
+
+    parent.appendChild(img);
+  };
+
+  const addTitle = (parentClass) => {
+    const parent = document.querySelector(`.${parentClass}`);
+    let div = document.createElement("div");
+
+    div.innerText = "BATTLESHIP";
+    div.classList.add("header");
+
+    parent.appendChild(div);
   };
 
   return { createPage, awaitAttack, awaitPlacement, placeShips };

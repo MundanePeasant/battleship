@@ -8,6 +8,13 @@
   --shuttle-grey: rgba(93, 109, 126);
 }
 
+@font-face {
+  font-family: "TopGun";
+  src: url("./assets/Bulletproof-w1nxx.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
 .fullscreen {
   position: absolute;
   top: 0;
@@ -23,8 +30,19 @@
 .title {
   width: 50%;
   height: 10%;
-  background-color: var(--water-leaf);
-  padding: 1%;
+  margin-top: 0.5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.header {
+  font-family: "TopGun";
+  font-size: 64px;
+  margin-left: 3%;
+  margin-right: 3%;
+  color: var(--pickled-bluewood);
 }
 
 .board-container {
